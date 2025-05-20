@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.star.mapper.NewsMapper">
+
+    <insert id="save">
+        INSERT INTO news (name, content, tag_id, cover, reader_ids, is_top, create_time)
+        VALUES (#{name}, #{content}, #{tagId}, #{cover}, #{readerIds}, #{isTop}, #{createTime})
+    </insert>
+
+    <update id="update">
+        UPDATE news
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="tagId != null">
+                tag_id = #{tagId},
+            </if>
+            <if test="cover != null and cover != ''">
+                cover = #{cover},
+            </if>
+            <if test="readerIds != null and readerIds != ''">
+                reader_ids = #{readerIds},
+            </if>
+            <if test="isTop != null">
+                is_top = #{isTop},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM news WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="query" resultMap="BaseResultMap">
+
+        SELECT n.*,t.name AS tag_name
+        FROM news n
+        LEFT JOIN tags t ON t.id = n.tag_id
+        <where>
+            <if test="name != null and name != ''">
+                AND n.name LIKE concat('%',#{name},'%')
+            </if>
+            <if test="tagId != null">
+                AND n.tag_id = #{tagId}
+            </if>
+            <if test="isTop != null">
+                AND n.is_top = #{isTop}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND n.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY n.id DESC
+        <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM news n
+        <where>
+            <if test="name != null and name != ''">
+                AND n.name LIKE concat('%',#{name},'%')
+            </if>
+            <if test="tagId != null">
+                AND n.tag_id = #{tagId}
+            </if>
+            <if test="isTop != null">
+                AND n.is_top = #{isTop}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND n.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+
+    </select>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.star.model.vo.NewsVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="content" property="content"/>
+        <result column="tag_id" property="tagId"/>
+        <result column="cover" property="cover"/>
+        <result column="reader_ids" property="readerIds"/>
+        <result column="is_top" property="isTop"/>
+        <result column="create_time" property="createTime"/>
+        <result column="tag_name" property="tagName"/>
+    </resultMap>
+
+</mapper>

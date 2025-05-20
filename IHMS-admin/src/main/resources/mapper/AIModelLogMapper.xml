@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.star.mapper.AIModelLogMapper">
+    
+    <!-- 基础列名映射 -->
+    <resultMap id="BaseResultMap" type="com.star.model.entity.AIModelLog">
+        <id column="id" property="id" />
+        <result column="model_name" property="modelName" />
+        <result column="api_endpoint" property="apiEndpoint" />
+        <result column="request_time" property="requestTime" />
+        <result column="response_time" property="responseTime" />
+        <result column="status" property="status" />
+        <result column="error_message" property="errorMessage" />
+    </resultMap>
+    
+    <!-- 基础列定义 -->
+    <sql id="Base_Column_List">
+        id, model_name, api_endpoint, request_time, response_time, status, error_message
+    </sql>
+    
+    <!-- 插入AI模型调用日志 -->
+    <insert id="insert" parameterType="com.star.model.entity.AIModelLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ai_model_log (
+            model_name, 
+            api_endpoint, 
+            request_time, 
+            response_time, 
+            status, 
+            error_message
+        ) VALUES (
+            #{modelName}, 
+            #{apiEndpoint}, 
+            #{requestTime}, 
+            #{responseTime}, 
+            #{status}, 
+            #{errorMessage}
+        )
+    </insert>
+    
+    <!-- 根据ID查询日志 -->
+    <select id="selectById" parameterType="long" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List" />
+        FROM ai_model_log
+        WHERE id = #{id}
+    </select>
+</mapper> 

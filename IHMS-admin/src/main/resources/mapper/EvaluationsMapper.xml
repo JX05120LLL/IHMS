@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.star.mapper.EvaluationsMapper">
+
+    <!-- resultMap 用于定义结果集映射 -->
+    <resultMap id="commentParentResultMap" type="com.star.model.vo.CommentParentVO">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userAvatar" column="user_avatar"/>
+        <result property="content" column="content"/>
+        <result property="contentId" column="content_id"/>
+        <result property="upvoteList" column="upvoteList"/>
+        <result property="childTotal" column="childTotal"/>
+        <result property="createTime"
+                column="create_time"
+                javaType="java.time.LocalDateTime"
+                jdbcType="TIMESTAMP"/>
+        <!-- 使用 collection 标签来映射一对多关系 -->
+        <collection property="commentChildVOS"
+                    ofType="com.star.model.vo.CommentChildVO"
+                    column="id"
+                    foreignColumn="id"
+                    select="getChildCommentsByParentId"/>
+    </resultMap>
+
+    <update id="update">
+        UPDATE evaluations e
+        SET e.upvote_list = #{upvoteList}
+        WHERE e.id = #{id}
+    </update>
+
+    <!-- 查询父级评论 -->
+    <select id="getParentComments" resultMap="commentParentResultMap">
+        SELECT e.id                                                            AS id,
+               e.content                                                       AS content,
+               e.content_id                                                    AS content_id,
+               e.upvote_list                                                   AS upvoteList,
+               e.create_time                                                   AS create_time,
+               u.id                                                            AS user_id,
+               u.user_name,
+               u.user_avatar,
+               (SELECT COUNT(*) FROM evaluations ev WHERE ev.parent_id = e.id) AS childTotal
+        FROM evaluations e
+                 LEFT JOIN user u ON u.id = e.commenter_id
+        WHERE e.content_id = #{contentId}
+          AND e.content_type = #{contentType}
+          AND e.parent_id IS NULL
+        ORDER BY id DESC
+    </select>
+
+    <!-- 根据父级评论ID查询子级评论 -->
+    <select id="getChildCommentsByParentId"
+            resultType="com.star.model.vo.CommentChildVO"
+            parameterType="Integer">
+        SELECT e.id           AS id,
+               e.content      AS content,
+               e.create_time  AS createTime,
+               e.parent_id    AS parentId,
+               e.upvote_list  AS upvoteList,
+               u.id           AS userId,
+               u.user_name    AS userName,
+               u.user_avatar  AS userAvatar,
+               u1.id          AS replierId,
+               u1.user_name   AS replierName,
+               u1.user_avatar AS replierAvatar
+        FROM evaluations e
+                 LEFT JOIN user u ON u.id = e.commenter_id
+                 LEFT JOIN user u1 ON u1.id = e.replier_id
+        WHERE e.parent_id = #{id}
+          AND e.parent_id IS NOT NULL
+        ORDER BY id DESC
+    </select>
+
+    <select id="query" resultType="com.star.model.vo.CommentChildVO">
+
+        SELECT e.id AS id,
+        e.content AS content,
+        e.create_time AS createTime,
+        e.parent_id AS parentId,
+        e.upvote_list AS upvoteList,
+        e.content_id AS contentId,
+        e.content_type AS contentType,
+        u.id AS userId,
+        u.user_name AS userName,
+        u.user_avatar AS userAvatar,
+        u1.id AS replier_id,
+        u1.user_name AS replierName,
+        u1.user_avatar AS replierAvatar
+        FROM evaluations e
+        LEFT JOIN user u ON u.id = e.commenter_id
+        LEFT JOIN user u1 ON u1.id = e.replier_id
+        <where>
+            <if test="id != null">
+                AND e.id = #{id}
+            </if>
+            <if test="contentType != null and contentType != ''">
+                AND e.content_type = #{contentType}
+            </if>
+            <if test="content != null and content != ''">
+                AND e.content like concat('%',#{content},'%')
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND e.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY e.create_time DESC
+        <if test="current != null and size != ''">
+            LIMIT #{current},#{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM evaluations e
+        <where>
+            <if test="id != null">
+                AND e.id = #{id}
+            </if>
+            <if test="contentType != null and contentType != ''">
+                AND e.content_type like concat('%',#{contentType},'%')
+            </if>
+            <if test="content != null and content != ''">
+                AND e.content like concat('%',#{content},'%')
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND e.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+
+    </select>
+
+    <!--    批量删除笔记信息-->
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM evaluations WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--评论信息新增-->
+    <insert id="save">
+        INSERT INTO evaluations(parent_id, commenter_id, replier_id, content_type, content_id, content,
+                                upvote_list, create_time)
+        VALUES (#{parentId}, #{commenterId}, #{replierId}, #{contentType}, #{contentId}, #{content},
+                #{upvoteList}, #{createTime})
+    </insert>
+
+    <!--    批量查询二级评论信息-->
+    <select id="selectChildComments" parameterType="list" resultType="Integer">
+        SELECT e.id FROM evaluations e WHERE e.parentId IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!--查询指定内容的全部评论数目-->
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM evaluations e
+        WHERE e.content_id = #{contentId}
+          AND e.content_type = #{contentType}
+    </select>
+
+</mapper>

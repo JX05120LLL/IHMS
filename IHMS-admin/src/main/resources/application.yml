@@ -1,0 +1,57 @@
+# 服务配置
+server:
+  port: 9999
+  servlet:
+    context-path: /api/personal-heath/v1.0
+# API地址前缀，用于接口拦截放行
+my-server:
+  api-context-path: /api/personal-heath/v1.0
+#MySQL与文件上传限制配置
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/personal_health?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+  # SpringBoot 2.6+解决与Swagger兼容性问题
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+# 让 Mybatis 在 Mapper目录下找到 XML 映射文件
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+# 大模型配置
+llm:
+  # 使用deepseek，可选值：openai/deepseek
+  provider: deepseek
+  connect-timeout: 30000  # 连接超时时间(ms)
+  read-timeout: 90000     # 读取超时时间(ms)，对于大模型需要更长时间
+
+# Deepseek配置  
+deepseek:
+  api-key: sk-d27f0c0faffe49028509f1fc1923eb78
+  model: deepseek-chat
+  api-url: https://api.deepseek.com/v1/chat/completions
+  max-retries: 2  # 请求失败后最大重试次数
+
+# 健康分析服务配置
+health:
+  analysis:
+    provider: llm
+
+# Knife4j配置
+knife4j:
+  enable: true
+  basic:
+    enable: false
+  setting:
+    language: zh-CN
+    enableSwaggerModels: true
+    enableDocumentManage: true
+    swaggerModelName: 实体类列表
+    enableOpenApi: false

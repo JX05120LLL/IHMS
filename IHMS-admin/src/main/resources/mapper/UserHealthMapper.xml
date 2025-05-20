@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.star.mapper.UserHealthMapper">
+
+    <insert id="batchSave">
+        INSERT INTO user_health (user_id, health_model_config_id, value, create_time)
+        VALUES
+        <foreach collection="list" item="userHealth" index="index" separator=",">
+            (#{userHealth.userId},#{userHealth.healthModelConfigId},#{userHealth.value},#{userHealth.createTime})
+        </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE user_health
+        <set>
+            <if test="value != null and value != ''">
+                value = #{value},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM user_health WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="query" resultMap="BaseResultMap">
+
+        SELECT uh.*,u.user_name,hmc.name,hmc.unit,hmc.symbol,hmc.value_range
+        FROM user_health uh
+        LEFT JOIN user u ON u.id = uh.user_id
+        LEFT JOIN health_model_config hmc ON hmc.id = uh.health_model_config_id
+        <where>
+            <if test="id != null">
+                AND uh.id = #{id}
+            </if>
+            <if test="userId != null">
+                AND uh.user_id = #{userId}
+            </if>
+            <if test="healthModelConfigId != null">
+                AND uh.health_model_config_id = #{healthModelConfigId}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND uh.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY uh.create_time DESC
+        <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+        </if>
+
+    </select>
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM user_health uh
+        <where>
+            <if test="id != null">
+                AND uh.id = #{id}
+            </if>
+            <if test="userId != null">
+                AND uh.user_id = #{userId}
+            </if>
+            <if test="healthModelConfigId != null">
+                AND uh.health_model_config_id = #{healthModelConfigId}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND uh.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+
+    </select>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.star.model.vo.UserHealthVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="health_model_config_id" property="healthModelConfigId"/>
+        <result column="value" property="value"/>
+        <result column="create_time" property="createTime"/>
+        <result column="name" property="name"/>
+        <result column="unit" property="unit"/>
+        <result column="symbol" property="symbol"/>
+        <result column="value_range" property="valueRange"/>
+    </resultMap>
+
+</mapper>

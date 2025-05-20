@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.star.mapper.NewsSaveMapper">
+
+    <insert id="save">
+        INSERT INTO news_save (user_id, news_id, create_time)
+        VALUES (#{userId}, #{newsId}, #{createTime})
+    </insert>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM news_save WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="query" resultMap="BaseResultMap">
+
+        SELECT ns.*,
+               u.user_name,
+               n.name,
+               n.cover,
+               n.create_time AS news_create_time,
+               n.content,
+               t.name AS tag_name
+        FROM news_save ns
+        LEFT JOIN user u ON u.id = ns.user_id
+        LEFT JOIN news n ON n.id = ns.news_id
+        LEFT JOIN tags t ON t.id = n.tag_id
+        <where>
+            <if test="userId != null">
+                AND ns.user_id = #{userId}
+            </if>
+            <if test="newsId != null">
+                AND ns.news_id = #{newsId}
+            </if>
+        </where>
+        ORDER BY ns.create_time DESC
+        <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM news_save ns
+        <where>
+            <if test="userId != null">
+                AND ns.user_id = #{userId}
+            </if>
+            <if test="newsId != null">
+                AND ns.news_id = #{newsId}
+            </if>
+        </where>
+
+    </select>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.star.model.vo.NewsSaveVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="news_id" property="newsId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="user_name" property="userName"/>
+        <result column="cover" property="cover"/>
+        <result column="name" property="name"/>
+        <result column="content" property="content"/>
+        <result column="tag_name" property="tagName"/>
+        <result column="news_create_time" property="newsCreateTime"/>
+    </resultMap>
+
+</mapper>

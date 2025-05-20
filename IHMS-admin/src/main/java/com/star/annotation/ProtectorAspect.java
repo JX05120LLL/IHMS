@@ -1,0 +1,72 @@
+package com.star.annotation;
+
+import com.star.context.LocalThreadHolder;
+import com.star.common.CommonResult;
+import com.star.em.RoleEnum;
+import com.star.utils.JwtUtil;
+import io.jsonwebtoken.Claims;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
+
+/**
+ * 接口鉴权保护切面
+ */
+@Aspect
+@Component
+public class ProtectorAspect {
+
+    /**
+     * 环绕通知
+     * 执行前 --- （目标操作） ---执行后
+     * 环绕：两端拦截
+     *
+     * @param proceedingJoinPoint 连接点
+     * @return Object
+     *  
+     */
+    @Around("@annotation(com.star.annotation.Protector)")
+    public Object auth(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        String token = request.getHeader("token");
+        if (token == null) {
+            return CommonResult.error("身份认证失败，请先登录");
+        }
+        Claims claims = JwtUtil.fromToken(token);
+        if (claims == null) {
+            return CommonResult.error("身份认证失败，请先登录");
+        }
+        Integer userId = claims.get("id", Integer.class);
+        Integer roleId = claims.get("role", Integer.class);
+        // 获取被拦截方法的签名
+        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
+        // 获取方法上的@Protector注解实例
+        Protector protectorAnnotation = signature.getMethod().getAnnotation(Protector.class);
+        if (protectorAnnotation == null) {
+            return CommonResult.error("身份认证失败，请先登录");
+        }
+        String role = protectorAnnotation.role();
+        // 验证用户角色
+        if (!"".equals(role)) {
+            if (!Objects.equals(RoleEnum.ROLE(Math.toIntExact(roleId)), role)) {
+                return CommonResult.error("无操作权限");
+            }
+        }
+        // 放在 ThreadLocal里面，当前线程都可用
+        LocalThreadHolder.setUserId(userId, roleId);
+        Object result = proceedingJoinPoint.proceed();
+        // 请求结束，释放资源
+        LocalThreadHolder.clear();
+        return result;
+    }
+
+
+}

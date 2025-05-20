@@ -1,0 +1,28 @@
+// 输入框
+.input-title {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    line-height: 45px;
+    font-size: 26px;
+    background-color: rgb(248,248,248);
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.top-bar {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 14px;
+    color: #909399;
+}
+
+.input-child {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 22px;
+    font-weight: bold;
+}

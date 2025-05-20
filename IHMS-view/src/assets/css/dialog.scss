@@ -1,0 +1,48 @@
+// 标签
+.theme-tag {
+    color: #1c1c1c;
+    background-color: rgb(237, 235, 235);
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+// 弹窗标题
+.dialog-title {
+    font-size: 16px;
+    padding: 15px 20px;
+    user-select: none;
+    color: rgb(107, 106, 106);
+}
+
+.dialog-avatar {
+    width: 78px;
+    height: 78px;
+}
+
+.dialog-input {
+    font-size: 24px;
+    font-weight: 600;
+    width: 100%;
+    border: 5px;
+    padding: 8px 6px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    user-select: none;
+    background-color: rgb(248, 248, 248);
+}
+
+.dialog-hover {
+    display: inline-block;
+    padding: 10px 6px;
+    font-size: 12px;
+    color: rgb(107, 106, 106);
+}
+
+
+.el-dialog {
+    border-radius: 8px !important;
+}

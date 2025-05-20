@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.star.mapper.MessageMapper">
+
+    <insert id="batchSave">
+        INSERT INTO message (content,message_type,receiver_id,sender_id,is_read,content_id,create_time)
+        VALUES
+        <foreach collection="list" item="message" index="index" separator=",">
+            (#{message.content},#{message.messageType},#{message.receiverId},#{message.senderId},#{message.isRead},#{message.contentId},#{message.createTime})
+        </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE message
+        <set>
+            <if test="isRead != null">
+                is_read = #{isRead},
+            </if>
+        </set>
+        WHERE receiver_id = #{userId}
+    </update>
+
+    <delete id="batchDelete" parameterType="list">
+        DELETE FROM message WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="query" resultMap="BaseResultMap">
+
+        SELECT m.*,
+        u1.user_name AS receiver_name,
+        u1.user_avatar AS receiver_avatar,
+        u2.id AS sender_id,
+        u2.user_avatar AS sender_avatar,
+        u2.user_name AS sender_name,
+        e.content AS evaluations_content
+        FROM message m
+        LEFT JOIN user u1 ON u1.id = m.receiver_id
+        LEFT JOIN user u2 ON u2.id = m.sender_id
+        LEFT JOIN evaluations e ON e.id = m.content_id
+        <where>
+            <if test="senderId != null">
+                AND m.sender_id = #{senderId}
+            </if>
+            <if test="contentId != null">
+                AND m.content_id = #{contentId}
+            </if>
+            <if test="userId != null">
+                AND m.receiver_id = #{userId}
+            </if>
+            <if test="messageType != null">
+                AND m.message_type = #{messageType}
+            </if>
+            <if test="content != null and content != ''">
+                AND m.content LIKE concat('%',#{content},'%')
+            </if>
+            <if test="isRead != null">
+                AND m.is_read = #{isRead}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND m.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+        ORDER BY m.create_time DESC
+        <if test="current != null and size != null">
+            LIMIT #{current},#{size}
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="integer">
+
+        SELECT COUNT(*)
+        FROM message m
+        <where>
+            <if test="senderId != null">
+                AND m.sender_id = #{senderId}
+            </if>
+            <if test="contentId != null">
+                AND m.content_id = #{contentId}
+            </if>
+            <if test="userId != null">
+                AND m.receiver_id = #{userId}
+            </if>
+            <if test="messageType != null">
+                AND m.message_type = #{messageType}
+            </if>
+            <if test="content != null and content != ''">
+                AND m.content LIKE concat('%',#{content},'%')
+            </if>
+            <if test="isRead != null">
+                AND m.is_read = #{isRead}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND m.create_time BETWEEN #{startTime} AND #{endTime}
+            </if>
+        </where>
+
+    </select>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.star.model.vo.MessageVO">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="message_type" property="messageType"/>
+        <result column="receiver_id" property="receiverId"/>
+        <result column="sender_id" property="senderId"/>
+        <result column="sender_avatar" property="senderAvatar"/>
+        <result column="sender_id" property="senderId"/>
+        <result column="is_read" property="isRead"/>
+        <result column="content_id" property="contentId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="sender_name" property="senderName"/>
+        <result column="receiver_avatar" property="receiverAvatar"/>
+        <result column="receiver_name" property="receiverName"/>
+        <result column="evaluations_content" property="evaluationsContent"/>
+    </resultMap>
+
+</mapper>
