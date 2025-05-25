@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
+    "dev:compatible": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
     "serve": "vue-cli-service serve",
+    "serve:compatible": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:compatible": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
