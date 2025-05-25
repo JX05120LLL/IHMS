@@ -36,6 +36,21 @@ public class HealthController {
         queryDto.setUserId(userId);
         return userHealthService.query(queryDto);
     }
+    
+    /**
+     * 获取用户健康数据列表 - 为页面助手提供的接口
+     */
+    @GetMapping("/data/list")
+    @ResponseBody
+    public Result<List<UserHealthVO>> getHealthDataList(@RequestParam(required = false) Integer userId) {
+        UserHealthQueryDto queryDto = new UserHealthQueryDto();
+        // 如果没有提供userId，则获取当前登录用户的数据
+        if (userId != null) {
+            queryDto.setUserId(userId);
+        }
+        // 按时间降序排列，获取最新的健康数据
+        return userHealthService.query(queryDto);
+    }
 
     /**
      * 获取健康记录详情

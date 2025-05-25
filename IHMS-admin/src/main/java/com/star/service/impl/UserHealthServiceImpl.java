@@ -26,7 +26,9 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -195,5 +197,134 @@ public class UserHealthServiceImpl implements IUserHealthService {
         
         return null;
     }
-
+    
+    /**
+     * 获取用户的所有健康记录
+     *
+     * @param userId 用户ID
+     * @return 健康记录列表
+     */
+    @Override
+    public List<UserHealth> getUserHealthRecords(Integer userId) {
+        if (userId == null) {
+            return new ArrayList<>();
+        }
+        
+        UserHealthQueryDto queryDto = new UserHealthQueryDto();
+        queryDto.setUserId(userId);
+        // 设置查询最近30条记录
+        queryDto.setSize(30);
+        queryDto.setCurrent(1);
+        
+        List<UserHealthVO> records = userHealthMapper.query(queryDto);
+        
+        // 将VO转换为实体
+        return records.stream()
+                .map(this::convertToEntity)
+                .collect(Collectors.toList());
+    }
+    
+    /**
+     * 获取用户指定类型的健康数据
+     *
+     * @param userId 用户ID
+     * @param dataTypes 数据类型列表
+     * @return 健康数据Map
+     */
+    @Override
+    public Map<String, Object> getSpecificHealthData(Integer userId, List<String> dataTypes) {
+        Map<String, Object> result = new HashMap<>();
+        
+        if (userId == null || dataTypes == null || dataTypes.isEmpty()) {
+            return result;
+        }
+        
+        // 获取用户最近的健康记录
+        List<UserHealth> recentRecords = getUserHealthRecords(userId);
+        
+        if (recentRecords.isEmpty()) {
+            return result;
+        }
+        
+        // 取最新的一条记录
+        UserHealth latestRecord = recentRecords.get(0);
+        
+        // 根据请求的数据类型提取数据
+        for (String dataType : dataTypes) {
+            switch (dataType) {
+                case "height":
+                    if (latestRecord.getHeight() != null) {
+                        result.put("身高", latestRecord.getHeight() + " cm");
+                    }
+                    break;
+                case "weight":
+                    if (latestRecord.getWeight() != null) {
+                        result.put("体重", latestRecord.getWeight() + " kg");
+                    }
+                    break;
+                case "bmi":
+                    if (latestRecord.getBmi() != null) {
+                        result.put("BMI", latestRecord.getBmi().toString());
+                    }
+                    break;
+                case "bloodPressure":
+                    if (latestRecord.getSystolicPressure() != null && latestRecord.getDiastolicPressure() != null) {
+                        result.put("血压", latestRecord.getSystolicPressure() + "/" + latestRecord.getDiastolicPressure() + " mmHg");
+                    }
+                    break;
+                case "heartRate":
+                    if (latestRecord.getHeartRate() != null) {
+                        result.put("心率", latestRecord.getHeartRate() + " bpm");
+                    }
+                    break;
+                case "bloodSugar":
+                    if (latestRecord.getBloodSugar() != null) {
+                        result.put("血糖", latestRecord.getBloodSugar() + " mmol/L");
+                    }
+                    break;
+                case "bloodOxygen":
+                    if (latestRecord.getBloodOxygen() != null) {
+                        result.put("血氧", latestRecord.getBloodOxygen() + "%");
+                    }
+                    break;
+                default:
+                    // 对于不支持的类型，忽略
+                    break;
+            }
+        }
+        
+        // 添加测量时间
+        if (latestRecord.getMeasureTime() != null) {
+            result.put("测量时间", latestRecord.getMeasureTime().toString());
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 将UserHealthVO转换为UserHealth实体
+     * @param vo 视图对象
+     * @return 实体对象
+     */
+    private UserHealth convertToEntity(UserHealthVO vo) {
+        UserHealth entity = new UserHealth();
+        entity.setId(vo.getId());
+        entity.setUserId(vo.getUserId());
+        entity.setHealthModelConfigId(vo.getHealthModelConfigId());
+        entity.setValue(vo.getValue());
+        entity.setCreateTime(vo.getCreateTime());
+        entity.setMeasureTime(vo.getMeasureTime());
+        
+        // 设置具体的健康指标
+        entity.setHeight(vo.getHeight());
+        entity.setWeight(vo.getWeight());
+        entity.setBmi(vo.getBmi());
+        entity.setSystolicPressure(vo.getSystolicPressure());
+        entity.setDiastolicPressure(vo.getDiastolicPressure());
+        entity.setHeartRate(vo.getHeartRate());
+        entity.setBloodSugar(vo.getBloodSugar());
+        entity.setBloodOxygen(vo.getBloodOxygen());
+        
+        return entity;
+    }
 }

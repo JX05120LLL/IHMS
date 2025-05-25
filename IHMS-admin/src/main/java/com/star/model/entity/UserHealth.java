@@ -31,4 +31,50 @@ public class UserHealth {
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
+    
+    /**
+     * 测量时间
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime measureTime;
+    
+    /**
+     * 身高(cm)
+     */
+    private Double height;
+    
+    /**
+     * 体重(kg)
+     */
+    private Double weight;
+    
+    /**
+     * BMI指数
+     */
+    private Double bmi;
+    
+    /**
+     * 收缩压(mmHg)
+     */
+    private Integer systolicPressure;
+    
+    /**
+     * 舒张压(mmHg)
+     */
+    private Integer diastolicPressure;
+    
+    /**
+     * 心率(bpm)
+     */
+    private Integer heartRate;
+    
+    /**
+     * 血糖(mmol/L)
+     */
+    private Double bloodSugar;
+    
+    /**
+     * 血氧饱和度(%)
+     */
+    private Integer bloodOxygen;
 }

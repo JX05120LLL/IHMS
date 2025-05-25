@@ -1,6 +1,6 @@
 # 服务配置
 server:
-  port: 9999
+  port: 21090
   servlet:
     context-path: /api/personal-heath/v1.0
 # API地址前缀，用于接口拦截放行
@@ -29,20 +29,38 @@ mybatis:
 llm:
   # 使用deepseek，可选值：openai/deepseek
   provider: deepseek
-  connect-timeout: 30000  # 连接超时时间(ms)
-  read-timeout: 90000     # 读取超时时间(ms)，对于大模型需要更长时间
+  connect-timeout: 60000  # 连接超时时间(ms) - 增加到60秒
+  read-timeout: 120000     # 读取超时时间(ms) - 增加到120秒
 
 # Deepseek配置  
 deepseek:
   api-key: sk-d27f0c0faffe49028509f1fc1923eb78
   model: deepseek-chat
   api-url: https://api.deepseek.com/v1/chat/completions
-  max-retries: 2  # 请求失败后最大重试次数
+  max-retries: 3  # 请求失败后最大重试次数
+  fallback-enabled: true  # 是否启用备用响应模式
 
 # 健康分析服务配置
 health:
   analysis:
     provider: llm
+
+# 医疗咨询助手配置
+medical:
+  assistant:
+    enabled: true
+    max-response-tokens: 2000
+    default-temperature: 0.3
+    # 默认系统提示词，用于指导AI生成适当的医疗建议
+    default-system-prompt: >
+      你是一个专业的医疗健康助手，名为IHMS医疗顾问。
+      你可以提供健康知识普及、生活方式建议和初步健康咨询。
+      请注意以下限制：
+      1. 你不是医生，不能提供确切的诊断、处方或治疗方案
+      2. 对于严重的健康问题，你应该建议用户寻求专业医疗帮助
+      3. 你应该以友好、专业的语气回答问题
+      4. 回答应当准确、简洁，并基于可靠的医学知识
+      5. 如果不确定，应明确告知用户并建议咨询医生
 
 # Knife4j配置
 knife4j:
