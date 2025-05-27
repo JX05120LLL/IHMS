@@ -10,27 +10,33 @@
 
 首页展示
 
-![首页](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\首页展示.png)
+![首页](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E9%A6%96%E9%A1%B5%E5%B1%95%E7%A4%BA.png?token=BDEY44WZY2AYDH5R3MHWXVLIGVX3O)
 
 信息页面展示
 
-![信息页面](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\信息展示.png)
+![信息页面](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E4%BF%A1%E6%81%AF%E5%B1%95%E7%A4%BA.png?token=BDEY44RMJPWBZV7YUJOTTWLIGVYAG)
 
 医生互动页面展示
 
-![医生互动](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\医生对话展示1.png)
+![医生互动](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%8C%BB%E7%94%9F%E5%AF%B9%E8%AF%9D%E5%B1%95%E7%A4%BA1.png?token=BDEY44S5XU2Z6FLM3LG7CELIGVYCU)
 
 
 
 deepseek咨询助手展示
 
-![AI助手展示1](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\咨询助手展示1.png)
+![AI助手展示1](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%92%A8%E8%AF%A2%E5%8A%A9%E6%89%8B%E5%B1%95%E7%A4%BA1.png?token=BDEY44TX2FWUHVACGQZAUYTIGVYEY)
 
-![AI助手展示2](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\咨询助手展示2.png)
+![AI助手展示2](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%92%A8%E8%AF%A2%E5%8A%A9%E6%89%8B%E5%B1%95%E7%A4%BA2.png?token=BDEY44RQ5AQX2PO3AEDC2ITIGVYG6)
+
+健康数据展示
+
+![健康数据](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%81%A5%E5%BA%B7%E6%95%B0%E6%8D%AE.png?token=BDEY44RBWUSJTGGSEZ2EJP3IGVYL6)
+
+
 
 后台管理页面展示
 
-![后台仪表盘](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\后台展示1.png)
+![后台仪表盘](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%90%8E%E5%8F%B0%E5%B1%95%E7%A4%BA1.png?token=BDEY44Q5AQPLZ6P7PK2TMZ3IGVYI6)
 
 
 
