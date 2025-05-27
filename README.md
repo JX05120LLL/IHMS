@@ -72,10 +72,10 @@ deepseek咨询助手展示
 
 ### 后端 (IHMS-admin)
 - 框架：Spring Boot
-- 持久层：MyBatis
+- 持久层：MyBatis，Mybatisplus
 - 数据库：MySQL
-- API文档：Swagger
-- 权限控制：Spring Security
+- API文档：Swagger,Knife4J
+- 权限控制：Spring Security,JWT
 
 ## 安装与运行
 
@@ -104,14 +104,19 @@ cd IHMS/IHMS-admin
 ```
 
 2. 修改数据库配置
-编辑 `src/main/resources/application.properties` 或 `application.yml` 文件，配置数据库连接信息
+  编辑 `src/main/resources/`application.yml` 文件，配置数据库连接信息
 
-3. 编译打包
+3. 修改deepseek api 的key
+
+  编辑 `src/main/resources/`application.yml` 文件
+
+4. 编译打包
 ```bash
 mvn clean package
 ```
 
-4. 运行服务
+5.运行服务
+
 ```bash
 java -jar target/IHMS-admin-*.jar
 ```
