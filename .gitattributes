@@ -1,3 +1,4 @@
 *.jpg filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 resources/pic/*.png filter=lfs diff=lfs merge=lfs -text
+src/main/resources/pic/*.png filter=lfs diff=lfs merge=lfs -text
