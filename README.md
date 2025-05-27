@@ -10,25 +10,27 @@
 
 首页展示
 
-![首页](D:\onedrive\图片\下载图片\首页展示.png)
+![首页](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\首页展示.png)
 
 信息页面展示
 
-![](D:\onedrive\图片\下载图片\信息展示.png)
+![信息页面](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\信息展示.png)
 
 医生互动页面展示
 
-![](D:\onedrive\图片\下载图片\医生对话展示1.png)
+![医生互动](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\医生对话展示1.png)
 
 
 
 deepseek咨询助手展示
 
-![](D:\onedrive\图片\下载图片\咨询助手展示2.png)
+![AI助手展示1](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\咨询助手展示1.png)
+
+![AI助手展示2](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\咨询助手展示2.png)
 
 后台管理页面展示
 
-![](D:\onedrive\图片\下载图片\后台展示1.png)
+![后台仪表盘](D:\code\project\健康管理系统\IHMS\IHMS-admin\src\main\resources\pic\后台展示1.png)
 
 
 
