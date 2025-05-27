@@ -34,7 +34,7 @@ llm:
 
 # Deepseek配置  
 deepseek:
-  api-key: sk-d27f0c0faffe49028509f1fc1923eb78
+  api-key: your-api-key  # Deepseek API Key
   model: deepseek-chat
   api-url: https://api.deepseek.com/v1/chat/completions
   max-retries: 3  # 请求失败后最大重试次数
