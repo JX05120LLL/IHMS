@@ -1,4 +1,7 @@
 .idea/
 node_modules/
+IHMS-view/dist/
+IHMS-admin/target/
+IHMS-admin/pic/
 .codebuddy
 相关文档

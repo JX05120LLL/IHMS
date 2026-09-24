@@ -1,200 +1,144 @@
-# 智慧健康管理系统 (IHMS - Intelligent Health Management System)
+# IHMS · 智慧健康管理系统
 
-一个完整的健康管理平台，包含前端用户界面、后台管理系统和数据库，旨在帮助用户记录、分析和管理个人健康信息。
+面向用户、医生和管理员的健康信息管理 Web 应用。用户可以记录健康指标、阅读健康资讯并发起医生咨询；医生处理咨询会话；管理员维护用户、医生、资讯和健康模型配置。
 
-## 项目介绍
+> 本项目用于学习和演示。健康分析与 AI 回复不能替代医生诊断、处方或紧急医疗服务。
 
-智慧健康管理系统是一个用于个人健康数据记录与管理的Web应用。系统提供简单直观的界面，帮助用户追踪健康指标、设置健康提醒、查询健康知识等功能，辅助用户进行日常健康管理。同时提供管理后台，用于健康数据的集中管理与分析。
+## ✨ 项目简介
 
-下面是一些图片展示
+IHMS 由 Vue 前端、Spring Boot 后端和 MySQL 数据库组成。前端包含用户端、医生端和管理端页面，后端提供健康记录、资讯、咨询消息及 AI 咨询等接口。仓库中的 SQL 文件包含演示记录，适合在**独立的本地测试数据库**中导入。
 
-首页展示
+## 🖼️ 界面预览
 
-![首页](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E9%A6%96%E9%A1%B5%E5%B1%95%E7%A4%BA.png?token=BDEY44WZY2AYDH5R3MHWXVLIGVX3O)
+| 用户首页 | 健康数据 |
+| --- | --- |
+| ![用户首页](IHMS-admin/src/main/resources/pic/首页展示.png) | ![健康数据](IHMS-admin/src/main/resources/pic/健康数据.png) |
 
-信息页面展示
+| 医生咨询 | 管理后台 |
+| --- | --- |
+| ![医生咨询](IHMS-admin/src/main/resources/pic/医生对话展示1.png) | ![管理后台](IHMS-admin/src/main/resources/pic/后台展示1.png) |
 
-![信息页面](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E4%BF%A1%E6%81%AF%E5%B1%95%E7%A4%BA.png?token=BDEY44RMJPWBZV7YUJOTTWLIGVYAG)
+## 🚀 核心功能
 
-医生互动页面展示
+- **个人健康记录**：录入和查看健康指标，展示趋势及异常指标提醒。
+- **健康资讯**：浏览、搜索、收藏资讯，支持评论与分类管理。
+- **医生咨询**：用户创建咨询并发送消息，医生查看和回复会话；当前前端聊天使用 HTTP 轮询。
+- **管理后台**：维护用户、医生、资讯、消息、健康记录及健康模型配置。
+- **AI 辅助**：后端提供 DeepSeek 聊天、健康建议和健康分析相关接口；调用外部模型需要单独配置 API Key，效果依赖模型服务。
 
-![医生互动](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%8C%BB%E7%94%9F%E5%AF%B9%E8%AF%9D%E5%B1%95%E7%A4%BA1.png?token=BDEY44S5XU2Z6FLM3LG7CELIGVYCU)
+## 🧩 技术栈
 
+| 模块 | 技术 |
+| --- | --- |
+| 前端 | Vue 2、Vue Router、Element UI、Axios、ECharts |
+| 后端 | Java 8、Spring Boot 2.6.13、MyBatis、MyBatis-Plus |
+| 数据库 | MySQL；仓库 SQL 导出自 MySQL 8.0 |
+| 接口与鉴权 | Knife4j / Swagger、JWT 拦截器 |
+| AI | DeepSeek API 及后端健康分析服务 |
 
+## 🏗️ 系统架构
 
-deepseek咨询助手展示
-
-![AI助手展示1](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%92%A8%E8%AF%A2%E5%8A%A9%E6%89%8B%E5%B1%95%E7%A4%BA1.png?token=BDEY44TX2FWUHVACGQZAUYTIGVYEY)
-
-![AI助手展示2](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%92%A8%E8%AF%A2%E5%8A%A9%E6%89%8B%E5%B1%95%E7%A4%BA2.png?token=BDEY44RQ5AQX2PO3AEDC2ITIGVYG6)
-
-健康数据展示
-
-![健康数据](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%81%A5%E5%BA%B7%E6%95%B0%E6%8D%AE.png?token=BDEY44RBWUSJTGGSEZ2EJP3IGVYL6)
-
-
-
-后台管理页面展示
-
-![后台仪表盘](https://media.githubusercontent.com/media/JX05120LLL/IHMS/refs/heads/main/IHMS-admin/src/main/resources/pic/%E5%90%8E%E5%8F%B0%E5%B1%95%E7%A4%BA1.png?token=BDEY44Q5AQPLZ6P7PK2TMZ3IGVYI6)
-
-
-
-## 系统架构
-
-系统由三部分组成：
-- **IHMS-view**: 前端用户界面，基于Vue.js开发
-- **IHMS-admin**: 后台管理系统，基于Java Spring Boot开发
-- **数据库**: MySQL数据库，存储用户健康数据和系统配置
-
-## 功能特点
-
-### 用户端功能
-- 用户健康数据记录与存储（身高、体重、血压等基础体征数据）
-- 健康数据可视化展示
-- 基础健康知识查询（集成DeepSeek API）
-- 健康提醒功能（服药、复诊等日常健康事项提醒）
-
-### 管理端功能
-- 用户管理
-- 健康数据统计与分析
-- 系统配置管理
-
-## 技术栈
-
-### 前端 (IHMS-view)
-- 框架：Vue.js 2.x + Element UI
-- 图表：ECharts 4.x
-- HTTP请求：Axios
-- 路由管理：Vue Router
-- 加密工具：CryptoJS、js-md5
-- 编辑器：WangEditor
-
-### 后端 (IHMS-admin)
-- 框架：Spring Boot
-- 持久层：MyBatis，Mybatisplus
-- 数据库：MySQL
-- API文档：Swagger,Knife4J
-- 权限控制：Spring Security,JWT
-
-## 安装与运行
-
-### 环境要求
-- JDK 1.8+
-- Maven 3.6+
-- Node.js (推荐使用v16.x版本以获得最佳兼容性)
-- npm 或 yarn
-- MySQL 5.7+
-
-### 数据库配置
-1. 创建数据库
-```sql
-CREATE DATABASE personal_health;
+```mermaid
+flowchart LR
+    Browser[浏览器 · Vue 用户/医生/管理页面] --> API[Spring Boot API]
+    API --> DB[(MySQL)]
+    API --> AI[DeepSeek API]
 ```
 
-2. 导入数据库脚本
-```bash
-mysql -u your_username -p personal_health < sql/personal_health.sql
+前端开发服务默认运行在 `http://localhost:21091`，后端默认运行在 `http://localhost:21090`。Axios 在 `IHMS-view/src/utils/request.js` 中使用固定的后端地址，API 前缀为 `/api/personal-heath/v1.0`。这里的 `heath` 是现有配置中的拼写，修改时须同步调整前后端。
+
+## 📁 项目结构
+
+```text
+IHMS/
+├── IHMS-admin/                  # Spring Boot 后端
+│   └── src/main/
+│       ├── java/com/star/      # Controller、Service、Mapper 等
+│       └── resources/          # application.yml、Mapper XML、预览图片
+├── IHMS-view/                   # Vue 前端
+│   ├── src/views/              # 用户、医生、管理员页面
+│   ├── src/router/              # 页面路由
+│   └── src/utils/               # HTTP 请求与聊天轮询等
+├── sql/personal_health.sql      # 表结构与演示数据
+├── LICENSE
+└── README.md
 ```
 
-### 后端服务 (IHMS-admin)
-1. 进入后端目录
+## ⚡ 快速开始
+
+### 1. 准备环境
+
+- JDK 8 及 Maven 3.6+（后端以 Java 8 为编译目标）。
+- MySQL 8.0；仓库中的 SQL 从 MySQL 8.0.39 导出。
+- Node.js 16 与 npm；前端基于 Vue CLI 4，较新 Node.js 可使用兼容脚本。
+
+### 2. 初始化数据库
+
+在仓库根目录执行：
+
 ```bash
-cd IHMS/IHMS-admin
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS personal_health CHARACTER SET utf8mb4;"
+mysql -u root -p personal_health < sql/personal_health.sql
 ```
 
-2. 修改数据库配置
-  编辑 `src/main/resources/`application.yml` 文件，配置数据库连接信息
+Windows PowerShell 不支持上面的输入重定向语法，可在 `cmd.exe` 中执行第二行，或运行：
 
-3. 修改deepseek api 的key
-
-  编辑 `src/main/resources/`application.yml` 文件
-
-4. 编译打包
-```bash
-mvn clean package
+```powershell
+cmd /c "mysql -u root -p personal_health < sql\personal_health.sql"
 ```
 
-5.运行服务
+导入脚本包含演示用户、医生、咨询和健康记录。请勿导入已有业务数据的数据库，也不要把这些演示账号用于真实环境。
+
+### 3. 启动后端
+
+编辑 `IHMS-admin/src/main/resources/application.yml`，将 MySQL 连接参数改为本机配置；需要使用 AI 咨询时，再配置 `deepseek.api-key`。该文件由 Git 跟踪，**不要提交真实密码或 API Key**。
 
 ```bash
-java -jar target/IHMS-admin-*.jar
+cd IHMS-admin
+mvn spring-boot:run
 ```
 
-### 前端服务 (IHMS-view)
-1. 进入前端目录
-```bash
-cd IHMS/IHMS-view
-```
+也可在 IDE 中运行 `com.star.Application`。后端地址为 `http://localhost:21090/api/personal-heath/v1.0`，Knife4j 页面位于 `http://localhost:21090/api/personal-heath/v1.0/doc.html`（需服务成功启动）。
 
-2. 安装依赖
-```bash
-npm install
-```
+### 4. 启动前端
 
-3. 运行开发服务器
-```bash
-# 对于较新版本的Node.js (v17+)
-npm run dev:compatible
+在另一个终端执行：
 
-# 对于较旧版本的Node.js
+```bash
+cd IHMS-view
+npm ci
 npm run dev
 ```
 
-4. 构建生产版本
-```bash
-# 对于较新版本的Node.js (v17+)
-npm run build:compatible
+浏览器访问 `http://localhost:21091`。若 Node.js 17+ 遇到 OpenSSL 相关构建错误，可使用 `npm run dev:compatible`。前端请求地址写在 `IHMS-view/src/utils/request.js`；变更后端端口或 API 前缀时，需要同步修改它。
 
-# 对于较旧版本的Node.js
+## 🔌 主要接口
+
+以下路径都位于 `/api/personal-heath/v1.0` 前缀下；具体参数和鉴权要求以运行中的 Knife4j 页面及 Controller 为准。
+
+| 功能 | 示例路径 |
+| --- | --- |
+| 登录与注册 | `POST /user/login`、`POST /user/register` |
+| 用户健康记录 | `/user-health/*`、`/health/record/*` |
+| 健康资讯 | `/news/*`、`/news-save/*` |
+| 医生咨询 | `/consultation/*`、`/doctor-message/*` |
+| AI 咨询 | `POST /api/deepseek/chat` |
+
+## 🛠️ 开发检查
+
+```bash
+cd IHMS-admin
+mvn test
+```
+
+```bash
+cd IHMS-view
+npm run lint
 npm run build
 ```
 
-## 项目结构
+当前仓库没有后端 `src/test` 测试目录；`mvn test` 主要检查编译与现有测试配置。前端生产构建在较新 Node.js 上如遇 OpenSSL 错误，可使用 `npm run build:compatible`。
 
-```
-IHMS/
-├── IHMS-admin/           # 后端管理系统
-│   ├── src/              # 源代码
-│   │   ├── main/         # 主要代码
-│   │   │   ├── java/     # Java代码
-│   │   │   └── resources/ # 配置文件
-│   │   └── test/         # 测试代码
-│   ├── pom.xml           # Maven配置
-│   └── target/           # 编译输出目录
-├── IHMS-view/            # 前端Vue项目
-│   ├── public/           # 静态资源
-│   ├── src/              # 源代码
-│   │   ├── assets/       # 资源文件
-│   │   ├── components/   # 组件
-│   │   ├── router/       # 路由配置
-│   │   ├── views/        # 页面
-│   │   ├── App.vue       # 根组件
-│   │   └── main.js       # 入口文件
-│   ├── package.json      # 依赖配置
-│   └── vue.config.js     # Vue配置
-├── sql/                  # 数据库脚本
-│   └── personal_health.sql # 数据库初始化脚本
-└── README.md             # 项目说明
-```
+## 📄 开源许可证
 
-## 使用说明
-
-### 用户端
-1. 注册/登录系统
-2. 进入个人健康数据管理界面
-3. 添加或更新健康数据
-4. 查看健康数据统计和趋势图表
-5. 设置健康提醒
-6. 使用健康知识查询功能获取相关信息
-
-### 管理端
-1. 使用管理员账号登录后台
-2. 管理用户信息和健康数据
-3. 查看系统运行状态和数据统计
-4. 管理健康知识库
-
-## 注意事项
-
-- **本系统仅作为个人健康管理的辅助工具，仍有诸多不完善的地方，仅作为参考学习使用，如果有帮助到你，请给我一个star，支持一下**
-
+本项目原创代码与文档按 [MIT License](LICENSE) 发布。第三方依赖及仓库中的图片等素材如有各自的权利归属，仍遵循其原有许可；本许可证不授予项目维护者无权授予的权利。
