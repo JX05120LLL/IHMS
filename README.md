@@ -1,6 +1,16 @@
-# IHMS · 智慧健康管理系统
-
-面向用户、医生和管理员的健康信息管理 Web 应用。用户可以记录健康指标、阅读健康资讯并发起医生咨询；医生处理咨询会话；管理员维护用户、医生、资讯和健康模型配置。
+<div align="center">
+  <h1>IHMS · 智慧健康管理系统</h1>
+  <p><strong>面向用户、医生和管理员的健康信息管理 Web 应用</strong></p>
+  <p>记录健康指标、阅读健康资讯、发起医生咨询，并通过管理后台维护平台内容。</p>
+  <p>
+    <img alt="Java 8" src="https://img.shields.io/badge/Java-8-ED8B00?style=for-the-badge&amp;logo=openjdk&amp;logoColor=white&amp;labelColor=555555" />
+    <img alt="Spring Boot 2.6.13" src="https://img.shields.io/badge/Spring_Boot-2.6.13-6DB33F?style=for-the-badge&amp;logo=springboot&amp;logoColor=white&amp;labelColor=555555" />
+    <img alt="Vue.js 2" src="https://img.shields.io/badge/Vue.js-2-42B883?style=for-the-badge&amp;logo=vuedotjs&amp;logoColor=white&amp;labelColor=555555" />
+    <img alt="MySQL 8" src="https://img.shields.io/badge/MySQL-8-4479A1?style=for-the-badge&amp;logo=mysql&amp;logoColor=white&amp;labelColor=555555" />
+    <br />
+    <img alt="Apache ECharts 4.8" src="https://img.shields.io/badge/Apache_ECharts-4.8-AA344D?style=for-the-badge&amp;logo=apacheecharts&amp;logoColor=white&amp;labelColor=555555" />
+  </p>
+</div>
 
 > 本项目用于学习和演示。健康分析与 AI 回复不能替代医生诊断、处方或紧急医疗服务。
 
